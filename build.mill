@@ -1,0 +1,42 @@
+//| mill-version: 1.0.0
+package build
+
+import mill.*
+import mill.scalalib.*
+import mill.scalalib.publish.*
+import mill.util.VcsVersion
+
+val millVersion = "1.0.0"
+
+object plugin extends ScalaModule, Openapi4sPublishModule {
+
+  def scalaVersion = "3.7.1"
+  def scalacOptions = Seq("-Ywarn-unused", "-deprecation")
+  def mvnDeps = Seq(
+    mvn"com.lihaoyi::mill-libs:$millVersion",
+    mvn"ba.sake::openapi4s:0.4.0".withDottyCompat(scalaVersion())
+  )
+
+  def artifactName = "mill-openapi4s"
+  def platformSuffix = "_mill" + mill.util.BuildInfo.millBinPlatform
+
+  object test extends ScalaTests, TestModule.Munit {
+    def munitVersion = "1.1.0"
+    def mvnDeps = Seq(
+      mvn"com.lihaoyi::mill-testkit:${millVersion}"
+    )
+  }
+
+}
+
+trait Openapi4sPublishModule extends PublishModule {
+  def publishVersion = VcsVersion.vcsState().format()
+  def pomSettings = PomSettings(
+    description = "Mill plugin for Openapi4s",
+    organization = "ba.sake",
+    url = "https://github.com/sake92/mill-openapi4s",
+    licenses = Seq(License.`Apache-2.0`),
+    versionControl = VersionControl.github(owner = "sake92", repo = "mill-openapi4s"),
+    developers = Seq(Developer("sake92", "Sakib Hadziavdic", "https://github.com/sake92"))
+  )
+}
