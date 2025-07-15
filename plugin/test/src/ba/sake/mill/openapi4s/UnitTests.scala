@@ -9,6 +9,8 @@ import mill.util.TokenReaders.*
 class UnitTests extends munit.FunSuite {
   test("petclinic") {
     object build extends TestRootModule with OpenApiGeneratorModule {
+      def scalaVersion = "3.7.1"
+      
       def openApi4sPackage = Task("demo")
 
       lazy val millDiscover = Discover[this.type]
@@ -16,7 +18,7 @@ class UnitTests extends munit.FunSuite {
 
     val resourceFolder = os.Path(sys.env("MILL_TEST_RESOURCE_DIR"))
     UnitTester(build, resourceFolder / "petclinic").scoped { eval =>
-      val Right(result) = eval(build.sources): @unchecked
+      val Right(result) = eval(build.openApi4sGenerate()): @unchecked
       // src/demo/models/Address.scala
       val addressModel = build.moduleDir / "src/demo/models/Address.scala"
       locally {
@@ -33,7 +35,7 @@ class UnitTests extends munit.FunSuite {
         to = build.moduleDir / "resources/openapi.json",
         replaceExisting = true
       )
-      eval(build.sources)
+      eval(build.openApi4sGenerate())
       locally {
         val addressModelContent = os.read(addressModel)
         assert(addressModelContent.contains(

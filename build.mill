@@ -15,8 +15,7 @@ object plugin extends ScalaModule, Openapi4sPublishModule {
   def scalaVersion = "3.7.1"
   def scalacOptions = Seq("-Ywarn-unused", "-deprecation")
   def mvnDeps = Seq(
-    mvn"com.lihaoyi::mill-libs:$millVersion",
-    mvn"ba.sake::openapi4s:0.4.0".withDottyCompat(scalaVersion())
+    mvn"com.lihaoyi::mill-libs:$millVersion"
   )
 
   object test extends ScalaTests, TestModule.Munit {
