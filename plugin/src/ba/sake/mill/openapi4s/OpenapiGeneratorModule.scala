@@ -1,8 +1,9 @@
-package ba.sake.openapi4s
+package ba.sake.mill.openapi4s
 
 import mill.*
 import mill.api.BuildCtx
 import mill.scalalib.*
+import ba.sake.openapi4s.OpenApiGenerator
 
 trait OpenApiGeneratorModule extends JavaModule {
 

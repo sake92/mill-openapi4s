@@ -1,24 +1,23 @@
 //| mill-version: 1.0.0
+
 package build
 
 import mill.*
 import mill.scalalib.*
 import mill.scalalib.publish.*
 import mill.util.VcsVersion
-
-val millVersion = "1.0.0"
+import mill.util.BuildInfo.{millVersion, millBinPlatform}
 
 object plugin extends ScalaModule, Openapi4sPublishModule {
-
+  def artifactName = "mill-openapi4s"
+  def platformSuffix = s"_mill${millBinPlatform}"
+  
   def scalaVersion = "3.7.1"
   def scalacOptions = Seq("-Ywarn-unused", "-deprecation")
   def mvnDeps = Seq(
     mvn"com.lihaoyi::mill-libs:$millVersion",
     mvn"ba.sake::openapi4s:0.4.0".withDottyCompat(scalaVersion())
   )
-
-  def artifactName = "mill-openapi4s"
-  def platformSuffix = "_mill" + mill.util.BuildInfo.millBinPlatform
 
   object test extends ScalaTests, TestModule.Munit {
     def munitVersion = "1.1.0"

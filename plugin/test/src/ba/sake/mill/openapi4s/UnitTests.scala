@@ -1,11 +1,10 @@
-package ba.sake.openapi4s
+package ba.sake.mill.openapi4s
 
 import mill.Task
 import mill.testkit.{TestRootModule, UnitTester}
 import mill.api.Discover
 import mill.PathRef
 import mill.util.TokenReaders.*
-import utest.*
 
 class UnitTests extends munit.FunSuite {
   test("petclinic") {
