@@ -21,7 +21,7 @@ trait OpenApiGeneratorModule extends ScalaModule {
     }
   }
 
-  def openApi4sVersion: T[String] = Task("0.5.0")
+  def openApi4sVersion: T[String] = "0.5.0"
 
   def openApi4sClasspath: T[Seq[PathRef]] = Task {
     defaultResolver().classpath(
