@@ -7,23 +7,23 @@ import mill.util.Jvm
 
 trait OpenApiGeneratorModule extends ScalaModule {
 
-  def openApi4sGenerator: Task[String] = Task("sharaf")
+  def openApi4sGenerator: T[String] = "sharaf"
 
-  def openApi4sPackage: Task[String]
+  def openApi4sPackage: T[String]
 
-  def openApi4sFile: Task[PathRef] = Task.Source {
+  def openApi4sFile: T[PathRef] = Task.Source {
     moduleDir / "resources/openapi.json"
   }
 
-  def openApi4sTargetDir: Task[PathRef] = Task {
+  def openApi4sTargetDir: T[PathRef] = Task {
     BuildCtx.withFilesystemCheckerDisabled {
       PathRef(moduleDir / "src")
     }
   }
 
-  def openApi4sVersion: Task[String] = Task("0.5.0")
+  def openApi4sVersion: T[String] = Task("0.5.0")
 
-  def openApi4sClasspath: Task[Seq[PathRef]] = Task {
+  def openApi4sClasspath: T[Seq[PathRef]] = Task {
     defaultResolver().classpath(
       Seq(
         mvn"ba.sake:openapi4s-cli_2.13:${openApi4sVersion()}"
@@ -31,7 +31,7 @@ trait OpenApiGeneratorModule extends ScalaModule {
     )
   }
 
-  def openApi4sGenerate(): Command[Unit] = Task.Command {
+  def openApi4sGenerate(): Task.Command[Unit] = Task.Command {
     println("Starting to generate OpenApi sources...")
     Jvm.withClassLoader(classPath = openApi4sClasspath().map(_.path).toSeq) { classLoader =>
       classLoader
