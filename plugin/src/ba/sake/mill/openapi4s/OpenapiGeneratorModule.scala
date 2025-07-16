@@ -21,10 +21,14 @@ trait OpenApiGeneratorModule extends ScalaModule {
     }
   }
 
+  def openApi4sVersion: Task[String] = Task("0.5.0")
+
   def openApi4sClasspath: Task[Seq[PathRef]] = Task {
-    defaultResolver().classpath(Seq(
-      mvn"ba.sake:openapi4s-cli_2.13:0.5.0"
-    ))
+    defaultResolver().classpath(
+      Seq(
+        mvn"ba.sake:openapi4s-cli_2.13:${openApi4sVersion()}"
+      )
+    )
   }
 
   def openApi4sGenerate(): Command[Unit] = Task.Command {
